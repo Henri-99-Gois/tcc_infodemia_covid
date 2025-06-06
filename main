@@ -1,103 +1,31 @@
-import spacy
-import pandas as pd
-from collections import Counter
-from sklearn.feature_extraction.text import TfidfVectorizer
+# 1. Importar bibliotecas essenciais
+import pandas as pd              # Biblioteca para manipulação e análise de dados em formato de tabela (semelhante ao Excel)
+import matplotlib.pyplot as plt  # Biblioteca para criação de gráficos e visualizações
 
-# Carrega o modelo do spaCy
-nlp = spacy.load("pt_core_news_sm")
+# 2. Carregar o arquivo CSV com os dados brutos da Secretaria de Saúde
+# O parâmetro 'sep' define o separador de colunas como ponto e vírgula (;)
+# O parâmetro 'encoding' define o padrão de acentuação usado nos arquivos do governo
+caminho_arquivo = r'H:\Writings\TCC I\INFORME_EPIDEMIOLOGICO_17_01_2024_GERAL.csv'
+df = pd.read_csv(caminho_arquivo, sep=';', encoding='latin1')
 
-# Frases da atividade
-reclamacoes = [
-    "Comprei um notebook Lenovo na Loja Maria Xaxim em março e ele já apresentou defeito na tela.",
-    "No dia 10/03, fiz a compra de um ar-condicionado LG pelo site da Loja Maria, mas a entrega nunca foi realizada.",
-    "No dia 02/04, comprei um micro-ondas Consul na loja do centro de Colombo, já reagendei a entrega várias vezes, mas ainda não foi entregue.",
-    "No início de maio, adquiri uma máquina de lavar Samsung e ela apresentou defeito... está dando erro no painel logo na primeira lavagem.",
-    "Comprei um micro-ondas Brastemp em Salvador e ele chegou amassado e sem garantia."
-]
+# 3. Exibir as primeiras 5 linhas da tabela para checar se os dados foram importados corretamente
+df.head()
 
-# Análise linguística por token
-dados_completos = []
+# 4. Filtrar apenas os registros de pacientes residentes no município de Curitiba
+# A função .str.upper() garante que a comparação seja feita em letras maiúsculas
+df_curitiba = df[df['MUN_RESIDENCIA'].str.upper() == 'CURITIBA'].copy()
 
-for i, texto in enumerate(reclamacoes, start=1):
-    doc = nlp(texto)
-    for token in doc:
-        # Detecta entidade nomeada
-        entidade = "Nenhuma"
-        for ent in doc.ents:
-            if token.idx >= ent.start_char and token.idx < ent.end_char:
-                entidade = f"{ent.label_} ({spacy.explain(ent.label_)})"
-                break
+# 5. Converter a coluna de data de diagnóstico para o tipo datetime do pandas
+# Isso permite ordenação cronológica, agregação por data e visualizações temporais
+df_curitiba['DATA_DIAGNOSTICO'] = pd.to_datetime(df_curitiba['DATA_DIAGNOSTICO'], errors='coerce')
 
-        # Custom tagging
-        palavra = token.text.lower()
-        if palavra in ["notebook", "micro-ondas", "máquina", "ar-condicionado"]:
-            custom = "produto"
-        elif palavra in ["entrega", "entregue", "entregar", "reagendei"]:
-            custom = "entrega"
-        elif palavra in ["defeito", "erro", "amassado"]:
-            custom = "problema"
-        elif palavra in ["garantia", "sem"]:
-            custom = "garantia"
-        elif token.ent_type_ == "GPE":
-            custom = "local"
-        elif token.ent_type_ == "DATE":
-            custom = "data"
-        else:
-            custom = "-"
+# 6. Agrupar os dados por data de diagnóstico e contar o número de casos por dia
+# Isso cria uma série temporal: cada data com sua respectiva contagem de casos
+casos_por_dia = df_curitiba.groupby('DATA_DIAGNOSTICO').size()
 
-        dados_completos.append({
-            "Frase Nº": i,
-            "Palavra": token.text,
-            "POS": token.pos_,
-            "Dependência": token.dep_,
-            "Palavra-Chefe": token.head.text,
-            "Entidade Nomeada": entidade,
-            "Stopword?": token.is_stop,
-            "Custom Tag": custom
-        })
-
-# Exporta análise linguística
-df = pd.DataFrame(dados_completos)
-df.to_csv("analise_linguistica_5frases.csv", index=False, encoding="utf-8-sig")
-
-# --------------------
-# ANÁLISE DE SENTIMENTO (REGRAS)
-# --------------------
-sentimentos = []
-palavras_negativas = [
-    "defeito", "erro", "amassado", "sem garantia",
-    "não foi entregue", "nunca foi realizada", "problema"
-]
-
-for i, frase in enumerate(reclamacoes, start=1):
-    frase_lower = frase.lower()
-    sentimento = "Neutro"
-    for termo in palavras_negativas:
-        if termo in frase_lower:
-            sentimento = "Negativo"
-            break
-
-    sentimentos.append({
-        "Frase Nº": i,
-        "Texto": frase,
-        "Sentimento": sentimento
-    })
-
-df_sentimento = pd.DataFrame(sentimentos)
-df_sentimento.to_csv("sentimento_reclamacoes.csv", index=False, encoding="utf-8-sig")
-
-# --------------------
-# TF-IDF
-# --------------------
-vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(reclamacoes)
-df_tfidf = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
-df_tfidf.to_csv("tfidf_reclamacoes.csv", index=False, encoding="utf-8-sig")
-
-# --------------------
-# FINALIZAÇÃO
-# --------------------
-print("✅ Todos os arquivos foram gerados com sucesso:")
-print("- analise_linguistica_5frases.csv")
-print("- sentimento_reclamacoes.csv")
-print("- tfidf_reclamacoes.csv")
+# 7. Plotar o gráfico de linha com o número de casos confirmados por dia
+casos_por_dia.plot(figsize=(12,5), title='Casos Confirmados por Dia - Curitiba')
+plt.xlabel('Data')             # Rótulo do eixo X
+plt.ylabel('Número de Casos')  # Rótulo do eixo Y
+plt.grid(True)                 # Exibir grade para facilitar a leitura visual
+plt.show()                     # Exibir o gráfico final
