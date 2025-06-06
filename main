@@ -1,0 +1,103 @@
+import spacy
+import pandas as pd
+from collections import Counter
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Carrega o modelo do spaCy
+nlp = spacy.load("pt_core_news_sm")
+
+# Frases da atividade
+reclamacoes = [
+    "Comprei um notebook Lenovo na Loja Maria Xaxim em março e ele já apresentou defeito na tela.",
+    "No dia 10/03, fiz a compra de um ar-condicionado LG pelo site da Loja Maria, mas a entrega nunca foi realizada.",
+    "No dia 02/04, comprei um micro-ondas Consul na loja do centro de Colombo, já reagendei a entrega várias vezes, mas ainda não foi entregue.",
+    "No início de maio, adquiri uma máquina de lavar Samsung e ela apresentou defeito... está dando erro no painel logo na primeira lavagem.",
+    "Comprei um micro-ondas Brastemp em Salvador e ele chegou amassado e sem garantia."
+]
+
+# Análise linguística por token
+dados_completos = []
+
+for i, texto in enumerate(reclamacoes, start=1):
+    doc = nlp(texto)
+    for token in doc:
+        # Detecta entidade nomeada
+        entidade = "Nenhuma"
+        for ent in doc.ents:
+            if token.idx >= ent.start_char and token.idx < ent.end_char:
+                entidade = f"{ent.label_} ({spacy.explain(ent.label_)})"
+                break
+
+        # Custom tagging
+        palavra = token.text.lower()
+        if palavra in ["notebook", "micro-ondas", "máquina", "ar-condicionado"]:
+            custom = "produto"
+        elif palavra in ["entrega", "entregue", "entregar", "reagendei"]:
+            custom = "entrega"
+        elif palavra in ["defeito", "erro", "amassado"]:
+            custom = "problema"
+        elif palavra in ["garantia", "sem"]:
+            custom = "garantia"
+        elif token.ent_type_ == "GPE":
+            custom = "local"
+        elif token.ent_type_ == "DATE":
+            custom = "data"
+        else:
+            custom = "-"
+
+        dados_completos.append({
+            "Frase Nº": i,
+            "Palavra": token.text,
+            "POS": token.pos_,
+            "Dependência": token.dep_,
+            "Palavra-Chefe": token.head.text,
+            "Entidade Nomeada": entidade,
+            "Stopword?": token.is_stop,
+            "Custom Tag": custom
+        })
+
+# Exporta análise linguística
+df = pd.DataFrame(dados_completos)
+df.to_csv("analise_linguistica_5frases.csv", index=False, encoding="utf-8-sig")
+
+# --------------------
+# ANÁLISE DE SENTIMENTO (REGRAS)
+# --------------------
+sentimentos = []
+palavras_negativas = [
+    "defeito", "erro", "amassado", "sem garantia",
+    "não foi entregue", "nunca foi realizada", "problema"
+]
+
+for i, frase in enumerate(reclamacoes, start=1):
+    frase_lower = frase.lower()
+    sentimento = "Neutro"
+    for termo in palavras_negativas:
+        if termo in frase_lower:
+            sentimento = "Negativo"
+            break
+
+    sentimentos.append({
+        "Frase Nº": i,
+        "Texto": frase,
+        "Sentimento": sentimento
+    })
+
+df_sentimento = pd.DataFrame(sentimentos)
+df_sentimento.to_csv("sentimento_reclamacoes.csv", index=False, encoding="utf-8-sig")
+
+# --------------------
+# TF-IDF
+# --------------------
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(reclamacoes)
+df_tfidf = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
+df_tfidf.to_csv("tfidf_reclamacoes.csv", index=False, encoding="utf-8-sig")
+
+# --------------------
+# FINALIZAÇÃO
+# --------------------
+print("✅ Todos os arquivos foram gerados com sucesso:")
+print("- analise_linguistica_5frases.csv")
+print("- sentimento_reclamacoes.csv")
+print("- tfidf_reclamacoes.csv")
