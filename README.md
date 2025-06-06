@@ -1,39 +1,47 @@
-# 🧠 Análise Linguística e Sentimental de Reclamações – NLP com Python
+📊 TCC – Modelos Estatísticos Aplicados à COVID-19 em Curitiba
 
-Este projeto utiliza **Python + spaCy + TF-IDF** para realizar uma análise textual completa de reclamações de consumidores, aplicando técnicas de **Processamento de Linguagem Natural (PLN)** e classificação de sentimento.
+Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de Henrique Dias, com foco na aplicação de **modelos estatísticos para análise e previsão da evolução da COVID-19**, utilizando dados reais de Curitiba.
 
-============================================================================================
+---
 
 ## 📌 Objetivo
 
-- Extrair informações estruturadas de textos soltos (tokenização, POS, entidades nomeadas)
-- Aplicar **tagueamento personalizado** com base em domínio específico
-- Classificar **sentimento com regras simples**
-- Identificar palavras relevantes via **TF-IDF**
-- Gerar arquivos `.csv` para visualização ou análise posterior
+- Analisar a evolução dos casos e mortes por COVID-19 com base em séries temporais reais
+- Comparar o desempenho de diferentes modelos estatísticos, como **médias móveis, suavização exponencial e SARIMA**
+- Simular cenários de incerteza usando **Monte Carlo**
+- Investigar correlação entre os dados e variáveis externas (como períodos de fake news ou políticas públicas)
+- Gerar insights que possam ser úteis para planejamento e políticas de saúde
 
-============================================================================================
+---
 
 ## 🧰 Tecnologias e Bibliotecas
 
-- Python 3.10+
-- spaCy (`pt_core_news_sm`)
-- pandas
-- scikit-learn (TF-IDF)
-- Jupyter ou VS Code
+- Python 3.x
+- pandas, numpy
+- matplotlib, seaborn
+- statsmodels (SARIMA, ETS)
+- scikit-learn (para testes de regressão)
+- `random` + `simpy` (para simulação Monte Carlo)
+- Jupyter Notebook ou VS Code
 
-============================================================================================
+---
 
-## 🧪 O que o script faz
+## 📁 Estrutura do Projeto
 
-1. Tokeniza cada frase, aplica POS tagging e dependência gramatical
-2. Detecta **Entidades Nomeadas** (NER) como datas, locais e pessoas
-3. Aplica um **sistema de "Custom Tags"** por palavra (produto, entrega, problema, etc.)
-4. Classifica sentimento por **regras manuais**
-5. Calcula TF-IDF para identificar palavras mais relevantes
-6. Exporta os seguintes arquivos:
-
-```text
-✅ analise_linguistica_5frases.csv
-✅ sentimento_reclamacoes.csv
-✅ tfidf_reclamacoes.csv
+```bash
+📂 tcc_covid_curitiba/
+│
+├── dados/
+│   └── covid_curitiba.csv
+│
+├── notebooks/
+│   ├── 01_analise_exploratoria.ipynb
+│   ├── 02_modelos_sarima.ipynb
+│   ├── 03_simulacao_montecarlo.ipynb
+│   └── 04_visualizacoes_finais.ipynb
+│
+├── src/
+│   └── funcoes_utilitarias.py
+│
+├── README.md
+└── requirements.txt
