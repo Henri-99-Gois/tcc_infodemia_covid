@@ -1,16 +1,20 @@
-📊 TCC – Modelos Estatísticos Aplicados à COVID-19 em Curitiba
+📊 TCC – Análise de Desinformação e COVID-19 com Séries Temporais
 
-Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de Henrique Dias, com foco na aplicação de **modelos estatísticos para análise e previsão da evolução da COVID-19**, utilizando dados reais de Curitiba.
+Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de Henrique Dias, com foco na aplicação de modelos estatísticos e análise de séries temporais para investigar a relação entre desinformação sobre vacinas e a evolução da COVID-19 no Brasil, com estudo de caso em Curitiba.
 
 ---
 
 ## 📌 Objetivo
 
-- Analisar a evolução dos casos e mortes por COVID-19 com base em séries temporais reais
-- Comparar o desempenho de diferentes modelos estatísticos, como **médias móveis, suavização exponencial e SARIMA**
-- Simular cenários de incerteza usando **Monte Carlo**
-- Investigar correlação entre os dados e variáveis externas (como períodos de fake news ou políticas públicas)
-- Gerar insights que possam ser úteis para planejamento e políticas de saúde
+- Coletar e estruturar dados de checagens falsas sobre vacinas no site da Agência Lupa (2020–2023)
+- Coletar e preparar dados epidemiológicos oficiais da COVID-19 em Curitiba
+- Analisar a evolução temporal de ambos os fenômenos (casos e fake news)
+- Aplicar modelos estatísticos como:
+  - Média móvel
+  - Suavização exponencial
+  - SARIMA e variações (SARIMAX/ARIMAX)
+- Simular cenários de incerteza com Monte Carlo
+- Discutir correlações e possíveis implicações para políticas públicas de saúde
 
 ---
 
@@ -19,9 +23,9 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
 - Python 3.x
 - pandas, numpy
 - matplotlib, seaborn
-- statsmodels (SARIMA, ETS)
+- statsmodels (SARIMA, ETS, ARIMAX)
 - scikit-learn (para testes de regressão)
-- `random` + `simpy` (para simulação Monte Carlo)
+- selenium, requests, GraphQL (coleta de dados)
 - Jupyter Notebook ou VS Code
 
 ---
@@ -29,19 +33,23 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
 ## 📁 Estrutura do Projeto
 
 ```bash
-📂 tcc_covid_curitiba/
+📂 tcc_covid_desinformacao/
 │
 ├── dados/
-│   └── covid_curitiba.csv
+│   ├── covid_curitiba.csv
+│   ├── checagens_lupa_completo.csv
+│   └── informe_epidemiologico_17_01_2024.csv
 │
 ├── notebooks/
-│   ├── 01_analise_exploratoria.ipynb
-│   ├── 02_modelos_sarima.ipynb
-│   ├── 03_simulacao_montecarlo.ipynb
-│   └── 04_visualizacoes_finais.ipynb
+│   ├── 01_coleta_dados_lupa_api.ipynb
+│   ├── 02_preprocessamento_series_temporais.ipynb
+│   ├── 03_modelos_estatisticos_sarima_arimax.ipynb
+│   ├── 04_simulacoes_montecarlo.ipynb
+│   └── 05_visualizacoes_finais_correlacoes.ipynb
 │
 ├── src/
-│   └── funcoes_utilitarias.py
+│   ├── coleta_lupa_api.py
+│   └── funcoes_analise_temporal.py
 │
 ├── README.md
 └── requirements.txt
