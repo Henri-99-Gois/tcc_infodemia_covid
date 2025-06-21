@@ -13,7 +13,6 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
   - Média móvel
   - Suavização exponencial
   - SARIMA e variações (SARIMAX/ARIMAX)
-- Simular cenários de incerteza com Monte Carlo
 - Discutir correlações e possíveis implicações para políticas públicas de saúde
 
 ---
