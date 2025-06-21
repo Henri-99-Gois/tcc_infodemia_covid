@@ -1,4 +1,4 @@
-📊 TCC – Análise de Desinformação e COVID-19 com Séries Temporais
+## 📊 TCC – Análise de Desinformação e COVID-19 com Séries Temporais
 
 Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de Henrique Dias, com foco na aplicação de modelos estatísticos e análise de séries temporais para investigar a relação entre desinformação sobre vacinas e a evolução da COVID-19 no Brasil, com estudo de caso em Curitiba.
 
@@ -33,7 +33,7 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
 ## 📁 Estrutura do Projeto
 
 ```bash
-📂 tcc_covid_desinformacao/
+📂 tcc/
 │
 ├── dados/
 │   ├── covid_curitiba.csv
