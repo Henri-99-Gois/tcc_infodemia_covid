@@ -37,6 +37,9 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
 
 ```bash
 📂 tcc_infodemia_covid/
+│
+├── 📜 README.md
+├── 📄 requirements.txt
 ├── 📁 dados/
 │   ├── 📥 raw/
 │   └── 📤 processed/
