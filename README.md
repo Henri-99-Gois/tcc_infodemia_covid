@@ -11,13 +11,17 @@ O objetivo central é quantificar se a inclusão de uma variável de desinforma�
 Os objetivos específicos incluem:
 
 -Coletar e estruturar dados de checagens falsas sobre a pandemia no site da Agência Lupa (2020–2023).
+
 -Preparar e tratar os dados epidemiológicos oficiais da COVID-19 para o município de Curitiba (SESA/PR).
+
 -Realizar uma análise exploratória para identificar tendências, sazonalidades e padrões visuais em ambas as séries temporais.
+
 -Conduzir uma competição de modelos estatísticos para avaliar o impacto da desinformação, comparando:
   -ARIMA: Modelo base univariado.
   -SARIMA: Modelo com componente sazonal.
   -ARIMAX: Modelo com a desinformação como variável exógena.
   -SARIMAX: Modelo combinado.
+  
 -Discutir os resultados e as implicações da infodemia para a gestão da saúde pública.
 
 ---
