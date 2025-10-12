@@ -37,26 +37,14 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
 
 ```bash
 📂 tcc_infodemia_covid/
-├── 📜 README.md    
-├── 📄 requirements.txt   
+│
+├── 📜 README.md
+├── 📄 requirements.txt
 ├── 📁 dados/
 │   ├── 📥 raw/
-│   │   ├── casos_covid_parana_raw.csv
-│   │   └── checagens_lupa_raw.csv
 │   └── 📤 processed/
-│       └── series_covid_desinfo_curitiba.csv           
 ├── 📓 notebooks/
-│   ├── 01_coleta_dados.ipynb
-│   ├── 02_analise_exploratoria_e_preprocessamento.ipynb 
-│   └── 03_competicao_modelos_previsao.ipynb
 ├── 📂 resultados/
 │   ├── 📊 graficos/
-│   │   ├── 01_serie_casos_mm7.png
-│   │   ├── 02_serie_desinformacao_semanal.png
-│   │   ├── 03_sobreposicao_casos_desinfo.png
-│   │   └── 04_previsao_vs_real_melhor_modelo.png
 │   └── 📈 tabelas/
-│       └── tabela_comparativa_modelos.csv
 └── 🐍 src/
-    ├── __init__.py
-    └── funcoes_projeto.py
