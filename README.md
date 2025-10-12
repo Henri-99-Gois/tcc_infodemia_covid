@@ -32,23 +32,12 @@ Este repositório contém o projeto de Trabalho de Conclusão de Curso (TCC) de 
 ## 📁 Estrutura do Projeto
 
 ```bash
-📂 tcc/
-│
-├── dados/
-│   ├── covid_curitiba.csv
-│   ├── checagens_lupa_completo.csv
-│   └── informe_epidemiologico_17_01_2024.csv
-│
-├── notebooks/
-│   ├── 01_coleta_dados_lupa_api.ipynb
-│   ├── 02_preprocessamento_series_temporais.ipynb
-│   ├── 03_modelos_estatisticos_sarima_arimax.ipynb
-│   ├── 04_simulacoes_montecarlo.ipynb
-│   └── 05_visualizacoes_finais_correlacoes.ipynb
-│
-├── src/
-│   ├── coleta_lupa_api.py
-│   └── funcoes_analise_temporal.py
-│
-├── README.md
-└── requirements.txt
+📂 tcc_infodemia_covid/
+├── 📁 dados/
+│   ├── 📥 raw/
+│   └── 📤 processed/
+├── 📓 notebooks/
+├── 📂 resultados/
+│   ├── 📊 graficos/
+│   └── 📈 tabelas/
+└── 🐍 src/
