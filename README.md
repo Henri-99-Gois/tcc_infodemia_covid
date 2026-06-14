@@ -1,6 +1,6 @@
 ## 📊 TCC – Modelagem de Séries Temporais com Variáveis de Desinformação: O Caso da COVID-19 em Curitiba
 
-Este repositório contém os scripts e rotinas de dados do Trabalho de Conclusão de Curso (TCC) do bacharelado em Gestão da Informação (UFPR) desenvolvido por Henrique Gois Dias. O projeto aplica engenharia de dados e modelagem econométrica de séries temporais para investigar a relação de precedência temporal entre o fluxo de desinformação digital (fake news) e o agravamento das curvas de contágio da COVID-19 no município de Curitiba (Recorte: 2020 a 2022).
+Este repositório contém os scripts e rotinas de dados do Trabalho de Conclusão de Curso (TCC) do bacharelado em Gestão da Informação (UFPR) desenvolvido por Henrique Dias. O projeto aplica engenharia de dados e modelagem econométrica de séries temporais para investigar a relação de precedência temporal entre o fluxo de desinformação digital (fake news) e o agravamento das curvas de contágio da COVID-19 no município de Curitiba (Recorte: 2020 a 2022).
 
 ---
 
@@ -26,7 +26,7 @@ Este repositório contém os scripts e rotinas de dados do Trabalho de Conclusã
 - Manipulação e Engenharia de Dados: pandas, numpy
 - Modelagem Estatística: statsmodels (Testes ADF, CCF, VAR, Granger e Decomposição STL)
 - Visualização de Dados: matplotlib (com estilo seaborn-whitegrid)
-- Ambiente de Desenvolvimento: Jupyter Notebook
+- Ambiente de Desenvolvimento: Visual Studio Code / Jupyter Notebook
 
 ---
 
