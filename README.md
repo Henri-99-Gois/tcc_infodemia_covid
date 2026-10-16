@@ -1,54 +1,79 @@
 ## TCC – Modelagem de Séries Temporais com Variáveis de Desinformação: O Caso da COVID-19 em Curitiba
 
-Este repositório contém os scripts e rotinas de dados do Trabalho de Conclusão de Curso (TCC) do bacharelado em Gestão da Informação (UFPR) desenvolvido por Henrique Dias. O projeto aplica engenharia de dados e modelagem econométrica de séries temporais para investigar a relação de precedência temporal entre o fluxo de desinformação digital (fake news) e o agravamento das curvas de contágio da COVID-19 no município de Curitiba (Recorte: 2020 a 2022).
+Este repositório contém os scripts e os dados do Trabalho de Conclusão de Curso (TCC) do bacharelado em Gestão da Informação (UFPR), desenvolvido por Henrique Gois Dias. O projeto compara, semana a semana, os casos confirmados de COVID-19 em Curitiba com o número de checagens de conteúdo falso publicadas pela Agência Lupa, de 2020 a 2022.
 
 ---
 
-##  Objetivo
+## Objetivo
 
-	O objetivo central da pesquisa é quantificar o impacto da "infodemia" na saúde pública, provando matematicamente o tempo de latência entre as ondas de desinformação e o consequente colapso do sistema de saúde, utilizando testes avançados de causalidade para descartar relações espúrias.
-	
-	Os objetivos específicos e metodológicos incluem:
-		-Extração via API: Coletar e estruturar dados de checagens com selo "Falso" na plataforma da Agência Lupa.
-		-Engenharia de Dados: Filtrar microdados estaduais (SESA/PR), isolar a capital e agregar milhares de notificações diárias em um dataset unificado de Semanas Epidemiológicas.
-		-Análise Exploratória: Aplicar Média Móvel (MM7) e Decomposição Sazonal (STL) para tratamento de ruídos diários e represamentos administrativos em hospitais.
-		-Modelagem Econométrica Multivariada:
-			-Aplicação do Teste Dickey-Fuller Aumentado (ADF) para garantir estacionariedade (I(0)).
-			-Uso da Função de Correlação Cruzada (CCF) para mapear o lag ótimo de impacto (identificando um atraso de 42 dias).
-			-Execução do Teste de Causalidade de Granger bidirecional em ambiente VAR (Vector Autoregression) para descartar a bicausalidade e provar a precedência unidirecional da desinformação.
+Investigar se há relação temporal entre o volume de checagens de desinformação e a evolução dos casos de COVID-19 em Curitiba.
+
+O código:
+
+- coleta as checagens com selo "Falso" da Agência Lupa;
+- filtra os microdados da SESA/PR para Curitiba e agrega casos e checagens em séries semanais;
+- aplica o teste Dickey-Fuller Aumentado (ADF), a função de correlação cruzada (CCF) e o teste de causalidade de Granger.
 
 ---
 
-##  Tecnologias e Bibliotecas
+## Tecnologias e Bibliotecas
 
-- Linguagem: Python 3.x
-- Coleta de Dados: requests, time
-- Manipulação e Engenharia de Dados: pandas, numpy
-- Modelagem Estatística: statsmodels (Testes ADF, CCF, VAR, Granger e Decomposição STL)
-- Visualização de Dados: matplotlib (com estilo seaborn-whitegrid)
-- Ambiente de Desenvolvimento: Visual Studio Code / Jupyter Notebook
+- Linguagem: Python 3.11
+- Coleta de dados: requests
+- Manipulação de dados: pandas, numpy
+- Estatística: statsmodels (ADF, CCF, Granger)
+- Visualização: matplotlib
+- Ambiente: VS Code / Jupyter Notebook
 
 ---
 
-##  Estrutura do Projeto
+## Estrutura do Projeto
 
 ```bash
 tcc_infodemia_covid/
-│
 ├── README.md
 ├── requirements.txt
-│ 
-├── dados/
-│   ├── raw/
-│   └── processed/
-│ 
-├── notebooks/
-│    ├── 01_coleta_dados
-│    ├── 02_analise_exploratoria_e_preprocessamento
-│    ├── 02b_agregacao_semanal_e_unificacao
-│    └── 03_correlacao_causalidade
-│ 
-└── resultados/
-    ├── graficos/
-    └── tabelas/
- 
+├── data/
+│   ├── raw/          # bases originais (baixar pelo Drive)
+│   ├── intermediate/ # casos diários de Curitiba
+│   └── processed/    # série semanal unificada
+├── notebooks/        # 01 → 02 → 02b → 03
+├── results/
+│   ├── figures/      # Figuras 2 a 5 do TCC
+│   └── tables/       # Tabelas 1 e 2 do TCC
+└── archive/          # tentativas anteriores com ARIMA/ARIMAX
+```
+
+---
+
+## Dados
+
+As bases originais estão no Google Drive, porque a da SESA tem 375 MB: **[pasta `raw`](https://drive.google.com/drive/folders/16IV_BZpdE3glv4XNhQ5VprCZL_yiZpxE?usp=sharing)**. Baixe os dois arquivos para `data/raw/`.
+
+| Arquivo | Fonte | MD5 |
+|---|---|---|
+| `casos_covid_parana_raw.csv` | SESA/PR, [Informe Epidemiológico de 17/01/2024, CSV "Geral"](https://www.documentador.pr.gov.br/documentador/pub.do?action=d&uuid=@gtf-escriba-sesa@a578e8e6-26aa-4327-90ca-a1ce0887c40c) | `113d7271e9dbaf4ac168ceaaa2c78881` |
+| `checagens_lupa_raw.csv` | Agência Lupa, checagens com selo "Falso" coletadas em maio/2025 (notebook 01) | `78f313f015531011ecb468d4a1ccb5e7` |
+
+> O serviço de busca usado na coleta da Lupa foi desativado, então a coleta não pode ser refeita. O CSV é o registro original.
+
+---
+
+## Como reproduzir
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate          # Linux/macOS: source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Execute os notebooks a partir da pasta `notebooks/`, nesta ordem:
+
+| Notebook | Gera |
+|---|---|
+| `01_coleta_dados` | confere os totais da Lupa (a célula de coleta **não** precisa ser executada) |
+| `02_analise_exploratoria_e_preprocessamento` | `data/intermediate/casos_diarios_curitiba.csv`, Figuras 2 e 3 |
+| `02b_agregacao_semanal_e_unificacao` | `data/processed/series_semanais_curitiba.csv` |
+| `03_correlacao_causalidade` | Figuras 4 e 5, Tabelas 1 (ADF) e 2 (Granger) |
+
+Os arquivos saem em `results/figures/` e `results/tables/`, com o número correspondente no TCC (por exemplo, `figura4_...png`, `tabela2_granger.csv`).

@@ -1,0 +1,9 @@
+# Ambiente virtual
+.venv/
+
+# Base SESA (375 MB): disponível no Google Drive, ver README
+data/raw/casos_covid_parana_raw.csv
+
+# Arquivos temporários
+__pycache__/
+.ipynb_checkpoints/
